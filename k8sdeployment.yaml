@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthcare-web-app-deploy
+  labels:
+    app: healthcare-web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: healthcare-web-app
+  template:
+    metadata:
+      labels:
+        app: healthcare-web-app
+    spec:
+      containers:
+      - name: healthcare-web-container
+        image: prajaktak19/healthcare-web-app:latest
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: healthcare-web-app-np-service1
+  labels:
+    app: healthcare-web-app
+spec:
+  selector:
+    app: healthcare-web-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31000    
+    port: 8082
+    targetPort: 8082
